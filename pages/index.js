@@ -54,7 +54,7 @@ const Home = () => {
               <QRCode
                 id="qr-gen"
                 size={150}
-                value={`${window.location.href}${id}`}
+                value={`https://one-redirector.vercel.app/${id}`}
                 level={"H"}
               />
             </div>
