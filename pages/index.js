@@ -1,19 +1,35 @@
 import { NextSeo } from "next-seo";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
+import axios from "axios";
 const Home = () => {
+  const saveData = async (arr) => {
+    try {
+      const response = await axios.post(
+        "https://one-redirector-backend.onrender.com/api/url",
+        {
+          iosURL: arr?.ios,
+          androidURL: arr?.android,
+        }
+      );
+      if (response.status == 200) {
+        setId(response.data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const [modal, showModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [urlArray, setUrlArray] = useState({
-    ios: "",
-    android: "",
+    ios: "https://apps.apple.com/us/app/hill-climb-racing/id564540143",
+    android:
+      "https://play.google.com/store/apps/details?id=com.fingersoft.hillclimb&hl=en_IN&gl=US",
   });
   const [id, setId] = useState("");
   useEffect(() => {
     if (id) {
-      const o = {};
-      o[id] = urlArray;
-      window.localStorage.setItem("url", JSON.stringify(o));
       showModal(true);
     }
   }, [id, urlArray]);
@@ -36,6 +52,17 @@ const Home = () => {
         title="1 Redirector"
         description="One QR Code for both appstore and playstore"
       />
+      {/* LOADER */}
+      {loading ? (
+        <div className="fixed top-0 left-0 bg-primary bg-opacity-20 backdrop-blur-lg h-screen w-full flex justify-center items-center">
+          <div className="mx-auto h-96 w-4/5 lg:w-1/3 bg-white rounded-lg px-6 py-8 flex flex-col items-center justify-center relative">
+            loading...
+          </div>
+        </div>
+      ) : null}
+
+      {console.log(id, "63287f3487683e0f867a664d")}
+
       {/* MODAL */}
       {modal ? (
         <div className="fixed top-0 left-0 bg-primary bg-opacity-20 backdrop-blur-lg h-screen w-full flex justify-center items-center">
@@ -58,6 +85,7 @@ const Home = () => {
                 level={"H"}
               />
             </div>
+            {/* <a href={`http://localhost:3000/${id}`}>Visit</a> */}
             <button
               className="bg-primary text-white text-lg rounded-xl mt-4 py-1 px-3 text-center w-40"
               type="button"
@@ -85,7 +113,7 @@ const Home = () => {
           action=""
           onSubmit={(e) => {
             e.preventDefault();
-            setId(Math.floor(Math.random() * 1000 + 1));
+            saveData(urlArray);
           }}
           className="flex flex-col w-4/5 lg:w-1/2 mt-12"
         >
