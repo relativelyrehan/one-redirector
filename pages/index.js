@@ -23,9 +23,8 @@ const Home = () => {
   const [modal, showModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [urlArray, setUrlArray] = useState({
-    ios: "https://apps.apple.com/us/app/hill-climb-racing/id564540143",
-    android:
-      "https://play.google.com/store/apps/details?id=com.fingersoft.hillclimb&hl=en_IN&gl=US",
+    ios: "",
+    android: "",
   });
   const [id, setId] = useState("");
   useEffect(() => {
